@@ -43,6 +43,14 @@ If you experience any errors while trying to install kickstart, run `:checkhealt
 -- Core Neovim settings, leaders, options, basic keymaps, basic autocmds
 -- ============================================================
 do
+  -- Tab Widths
+  vim.opt.tabstop = 4
+  vim.opt.softtabstop = 4 -- Number of spaces a <Tab> counts for while editing
+  vim.opt.shiftwidth = 4 -- Number of spaces used for each step of (auto)indent
+  vim.opt.expandtab = true -- Convert tabs to spaces
+
+  -- Sets how neovim will display certain whitespace characters in the editor.
+  --  See `:help 'list'`kk
   -- Enable faster startup by caching compiled Lua modules
   vim.loader.enable()
 
@@ -52,7 +60,6 @@ do
   vim.g.mapleader = ' '
   vim.g.maplocalleader = ' '
 
-  -- Set to true if you have a Nerd Font installed and selected in the terminal
   vim.g.have_nerd_font = true
 
   -- [[ Setting options ]]
@@ -63,7 +70,6 @@ do
   -- Make line numbers default
   vim.o.number = true
   -- You can also add relative line numbers, to help with jumping.
-  --  Experiment for yourself to see if you like it!
   -- vim.o.relativenumber = true
 
   -- Enable mouse mode, can be useful for resizing splits for example!
@@ -148,7 +154,7 @@ do
     underline = { severity = { min = vim.diagnostic.severity.WARN } },
 
     -- Can switch between these as you prefer
-    virtual_text = true,   -- Text shows up at the end of the line
+    virtual_text = true, -- Text shows up at the end of the line
     virtual_lines = false, -- Text shows up underneath the line, with virtual lines
 
     -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
@@ -260,10 +266,7 @@ do
       end
 
       if name == 'LuaSnip' then
-        if vim.fn.has 'win32' ~= 1 and vim.fn.executable 'make' == 1 then
-          run_build(name, { 'make', 'install_jsregexp' },
-            ev.data.path)
-        end
+        if vim.fn.has 'win32' ~= 1 and vim.fn.executable 'make' == 1 then run_build(name, { 'make', 'install_jsregexp' }, ev.data.path) end
         return
       end
 
@@ -326,10 +329,10 @@ do
     icons = { mappings = vim.g.have_nerd_font },
     -- Document existing key chains
     spec = {
-      { '<leader>s', group = '[S]earch',    mode = { 'n', 'v' } },
+      { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
       { '<leader>t', group = '[T]oggle' },
-      { '<leader>h', group = 'Git [H]unk',  mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
-      { 'gr',        group = 'LSP Actions', mode = { 'n' } },
+      { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
+      { 'gr', group = 'LSP Actions', mode = { 'n' } },
     },
   }
 
@@ -538,8 +541,7 @@ do
   )
 
   -- Shortcut for searching your Neovim configuration files
-  vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config', follow = true } end,
-    { desc = '[S]earch [N]eovim files' })
+  vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config', follow = true } end, { desc = '[S]earch [N]eovim files' })
 end
 
 -- ============================================================
@@ -640,9 +642,7 @@ do
       --
       -- This may be unwanted, since they displace some of your code
       if client and client:supports_method('textDocument/inlayHint', event.buf) then
-        map('<leader>th',
-          function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end,
-          '[T]oggle Inlay [H]ints')
+        map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
       end
     end,
   })
@@ -766,8 +766,7 @@ do
     },
   }
 
-  vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end,
-    { desc = '[F]ormat buffer' })
+  vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })
 end
 
 -- ============================================================
