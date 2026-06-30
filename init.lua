@@ -652,8 +652,28 @@ do
   --  See `:help lsp-config` for information about keys and how to configure
   ---@type table<string, vim.lsp.Config>
   local servers = {
-    clangd = {},
-    jdtls = {},
+    clangd = {
+      cmd = {
+        "clangd",
+        "--background-index",
+        "j=6",
+        "--clang-tidy",
+        "--completion-style=detailed",
+      },
+      init_options = {
+        fallbackFlags = {
+          "-std=c++23",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wshadow",
+          "-Wconversion"
+        }
+      }
+    },
+    jdtls = {
+
+    },
     -- gopls = {},
     -- pyright = {},
     -- rust_analyzer = {},
